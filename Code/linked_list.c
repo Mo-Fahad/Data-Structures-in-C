@@ -9,12 +9,14 @@ struct Node
 int display(struct Node*);
 
 struct Node *insert_at_head(struct Node*,int);
-struct Node *insert_at_end(struct Node*,int);
+struct Node *insert_at_tail(struct Node*,int);
 struct Node *insert_at_pos(struct Node*,int,int);
 
 struct Node *delete_at_head(struct Node*);
 struct Node *delete_at_tail(struct Node*);
 struct Node *delete_at_pos(struct Node*,int);
+
+struct Node *reverse_list(struct Node*);
 
 int main() {
 
@@ -23,8 +25,11 @@ int main() {
     head = insert_at_head(head,30);
     head = insert_at_head(head,10);
     head = insert_at_pos(head,20,2);
-    head = delete_at_pos(head,1);
+    head = insert_at_tail(head,40);
+    head = insert_at_tail(head,50);
 
+    display(head);
+    head=reverse_list(head);
     display(head);
 
     return 1;
@@ -56,7 +61,7 @@ struct Node *insert_at_head( struct Node* head, int data ) {
     return head;
 }
 
-struct Node *insert_at_end(struct Node* head,int data) {
+struct Node *insert_at_tail(struct Node* head,int data) {
     struct Node *temp = (struct Node*)malloc(sizeof(struct Node));
     temp->data = data;
     temp->next = NULL;
@@ -155,4 +160,25 @@ struct Node *delete_at_pos(struct Node* head, int pos) {
     temp = NULL;
     free(temp);
     return head;
+}
+
+struct Node *reverse_list(struct Node *head) {
+    if (head==NULL || head->next==NULL)
+    {
+        return head;
+    }
+    
+    struct Node *cur,*prev,*next;
+    cur = head;
+    next = cur->next;
+    prev = NULL;
+    while (next!=NULL)
+    {
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+        next = next->next;
+    }
+    cur->next = prev;
+    return cur;
 }
